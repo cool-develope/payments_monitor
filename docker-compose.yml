@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: payments
+    volumes:
+      - payments-db:/var/lib/postgresql/data
+
+  payments:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_DATABASE: payments
+      DB_PORT: 5432
+    depends_on:
+      - postgres
+
+volumes:
+  payments-db:
